@@ -22,58 +22,60 @@ const todos = [
 
 ];
 
-// const p = document.querySelectorAll('p');
-// let incompleteToDos = 0;
+const filters = {
+    searchText: ''
+}
 
+const renderTodos = function (todos, filters) {
+    const filteredTodos = todos.filter(function (todo) {
+        return todo.text.toLowerCase().includes(filters.searchText.toLowerCase())
+    });
 
-// notes.forEach(todo => {
-//     if (!todo.completed) {
-//         incompleteToDos++;
-//     }
-// })
+    const incompleteTodos = filteredTodos.filter(function (todo) {
+        return !todo.completed
+    });
 
-// const incompleteToDosArr = notes.filter(todo => {
+    document.querySelector('.todo-list').innerHTML = '';
+
+    const summary = document.createElement('h2');
+summary.textContent = `You have ${incompleteTodos.length} todos left`;
+document.querySelector('.todo-list').appendChild(summary);
+
+    filteredTodos.forEach(function (todo) {
+        const todoEl = document.createElement('p');
+        todoEl.textContent = todo.text;
+        document.querySelector('.todo-list').appendChild(todoEl);
+    })
+    console.log(filteredTodos);
+}
+
+renderTodos(todos, filters);
+
+// const incompleteTodos = todos.filter(function (todo) {
 //     return !todo.completed
-// })
-
-// console.log(incompleteToDos);
-
-// console.log(p);
-// p.forEach(paragraph => {
-//     // const sentence = paragraph.textContent.includes('and');
-//     // console.log(sentence);
-
-//     // if(sentence) {
-//     //     paragraph.remove();
-//     // }
-//     paragraph.remove();
 // });
 
-// const header2 = document.createElement('h2');
-// const paragraph = document.createElement('p');
-// const body = document.querySelector('body')
-// header2.textContent = 'List of things to Learn';
-// // paragraph.textContent = `You have ${incompleteToDos} left to complete`;
-// paragraph.textContent = `You have ${incompleteToDosArr.length} left to complete`;
-// body.appendChild(header2);
-// body.appendChild(paragraph);
+// console.log('incomplete todos-->', incompleteTodos);
 
-// notes.forEach(note => {
-//     console.log(note.title);
-//   paragraph.textContent = note.title  
-// })
-
-const incompleteTodos = todos.filter(function (todo) {
-    return !todo.completed
+document.querySelector('#add-todo').addEventListener('click', function(e) {
+    e.target.textContent = 'Mpillz'
+ console.log('Add todo');
 });
 
-const summary = document.createElement('h2');
-summary.textContent = `You have ${incompleteTodos.length} todos left`;
-document.querySelector('body').appendChild(summary);
-
-todos.forEach(function (todo) {
-    const p = document.createElement('p');
-    console.log(p);
-    p.textContent = todo.text;
-    document.querySelector('body').appendChild(p);
+document.querySelector('#search-text').addEventListener('input', function(e) {
+    filters.searchText = e.target.value;
+    renderTodos(todos, filters);
+    console.log(e.target.value);
 });
+
+// const summary = document.createElement('h2');
+// summary.textContent = `You have ${incompleteTodos.length} todos left`;
+// document.querySelector('.todo-list').appendChild(summary);
+
+// todos.forEach(function (todo) {
+//     const p = document.createElement('p');
+//     console.log(p);
+//     p.textContent = todo.text;
+//     document.querySelector('.todo-list').appendChild(p);
+// });
+
