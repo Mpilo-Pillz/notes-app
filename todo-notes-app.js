@@ -22,6 +22,8 @@ const todos = [
 
 ];
 
+
+
 // const p = document.querySelectorAll('p');
 // let incompleteToDos = 0;
 

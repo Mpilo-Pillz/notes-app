@@ -1,30 +1,17 @@
-const todos = [
-    {
-        text: 'HTML and CSS',
-        completed: true
-    },
-    {
-        text: 'MongoDB',
-        completed: false
-    },
-    {
-        text: 'JavaScript',
-        completed: false
-    },
-    {
-        text: 'TypeScript',
-        completed: false
-    },
-    {
-        text: 'Advanced CSS and SASS',
-        completed: true
-    },
+let todos = [
+    
 
 ];
 
 const filters = {
     searchText: '',
     hideCompleted: false
+}
+
+const todosJSON = localStorage.getItem('todos');
+
+if (todosJSON !== null) {
+    todos = JSON.parse(todosJSON)
 }
 
 // const renderTodos = function (todos, filters) {
@@ -54,7 +41,7 @@ const filters = {
         const filteredTodos = todos.filter(function (todo) {
             const searchTextMatch = todo.text.toLowerCase().includes(filters.searchText.toLowerCase());
             const hideCompletedMatch = !filters.hideCompleted || !todo.completed;
-            
+
             return searchTextMatch && hideCompletedMatch; 
         });
     
@@ -89,6 +76,7 @@ document.querySelector('#new-todo').addEventListener('submit', function(e) {
         text: e.target.elements.text.value,
         completed: false
     });
+    localStorage.setItem('todos', JSON.stringify(todos))
     renderTodos(todos, filters);
     e.target.elements.text.value = '';
 });
