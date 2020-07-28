@@ -77,3 +77,26 @@ todos.forEach(function (todo) {
     p.textContent = todo.text;
     document.querySelector('body').appendChild(p);
 });
+
+
+// const summary = document.createElement('h2');
+// summary.textContent = `You have ${incompleteTodos.length} todos left`;
+// document.querySelector('.todo-list').appendChild(summary);
+
+// todos.forEach(function (todo) {
+//     const p = document.createElement('p');
+//     console.log(p);
+//     p.textContent = todo.text;
+//     document.querySelector('.todo-list').appendChild(p);
+// });
+
+// const incompleteTodos = todos.filter(function (todo) {
+//     return !todo.completed
+// });
+
+// console.log('incomplete todos-->', incompleteTodos);
+
+document.querySelector('#add-todo').addEventListener('click', function(e) {
+    e.target.textContent = 'Mpillz'
+ console.log('Add todo');
+});

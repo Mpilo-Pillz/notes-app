@@ -23,13 +23,41 @@ const todos = [
 ];
 
 const filters = {
-    searchText: ''
+    searchText: '',
+    hideCompleted: false
 }
 
-const renderTodos = function (todos, filters) {
-    const filteredTodos = todos.filter(function (todo) {
-        return todo.text.toLowerCase().includes(filters.searchText.toLowerCase())
-    });
+// const renderTodos = function (todos, filters) {
+//     const filteredTodos = todos.filter(function (todo) {
+//         return todo.text.toLowerCase().includes(filters.searchText.toLowerCase())
+//     });
+
+    // const renderTodos = function (todos, filters) {
+    //     const filteredTodos = todos.filter(function (todo) {
+    //         if (filters.hideCompleted) {
+    //             return todo.text.toLowerCase().includes(filters.searchText.toLowerCase())
+    //         } else {
+    //             return todo.text.toLowerCase().includes(filters.searchText.toLowerCase()) && !todo.completed;
+    //         }
+    //     });
+
+    // const renderTodos = function (todos, filters) {
+    // let filteredTodos = todos.filter(function (todo) {
+    //     return todo.text.toLowerCase().includes(filters.searchText.toLowerCase())
+    // });
+
+    // filteredTodos = filteredTodos.filter(function (todo) {
+    //     return !filters.hideCompleted || !todo.completed
+    // })
+
+    const renderTodos = function (todos, filters) {
+        const filteredTodos = todos.filter(function (todo) {
+            const searchTextMatch = todo.text.toLowerCase().includes(filters.searchText.toLowerCase());
+            const hideCompletedMatch = !filters.hideCompleted || !todo.completed;
+            
+            return searchTextMatch && hideCompletedMatch; 
+        });
+    
 
     const incompleteTodos = filteredTodos.filter(function (todo) {
         return !todo.completed
@@ -46,36 +74,29 @@ document.querySelector('.todo-list').appendChild(summary);
         todoEl.textContent = todo.text;
         document.querySelector('.todo-list').appendChild(todoEl);
     })
-    console.log(filteredTodos);
 }
 
 renderTodos(todos, filters);
 
-// const incompleteTodos = todos.filter(function (todo) {
-//     return !todo.completed
-// });
-
-// console.log('incomplete todos-->', incompleteTodos);
-
-document.querySelector('#add-todo').addEventListener('click', function(e) {
-    e.target.textContent = 'Mpillz'
- console.log('Add todo');
-});
-
 document.querySelector('#search-text').addEventListener('input', function(e) {
     filters.searchText = e.target.value;
     renderTodos(todos, filters);
-    console.log(e.target.value);
 });
 
-// const summary = document.createElement('h2');
-// summary.textContent = `You have ${incompleteTodos.length} todos left`;
-// document.querySelector('.todo-list').appendChild(summary);
+document.querySelector('#new-todo').addEventListener('submit', function(e) {
+    e.preventDefault();
+    todos.push({
+        text: e.target.elements.text.value,
+        completed: false
+    });
+    renderTodos(todos, filters);
+    e.target.elements.text.value = '';
+});
 
-// todos.forEach(function (todo) {
-//     const p = document.createElement('p');
-//     console.log(p);
-//     p.textContent = todo.text;
-//     document.querySelector('.todo-list').appendChild(p);
-// });
+document.querySelector('#hide-completed').addEventListener('change', function (e) {
+    filters.hideCompleted = e.target.checked;
+    renderTodos(todos, filters);
+})
+
+
 
