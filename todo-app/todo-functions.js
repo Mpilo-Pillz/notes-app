@@ -14,6 +14,27 @@ const saveTodos = function (todos) {
   localStorage.setItem("todos", JSON.stringify(todos));
 };
 
+const removeTodo = function (id) {
+  const todoIndex = todos.findIndex(function (todo){
+    return todo.id === id;
+  })
+
+  if (todoIndex > -1) {
+    todos.splice(todoIndex, 1);
+  }
+}
+
+//TOggle completed value for given todo
+const toggleTodo = function(id) {
+  const todo = todos.find(function(todo) {
+    return todo.id === id;
+  })
+
+  if (todo !== undefined) {
+    todo.completed = !todo.completed;
+  }
+}
+
 //render todos based on filters
 const renderTodos = function (todos, filters) {
   const filteredTodos = todos.filter(function (todo) {
@@ -49,7 +70,14 @@ const renderTodos = function (todos, filters) {
 
         //Set up todo checkbox
         checkbox.setAttribute('type', 'checkbox');
+        checkbox.checked = todo.completed;
         todoEl.appendChild(checkbox);
+
+        checkbox.addEventListener('change', function() {
+          toggleTodo(todo.id);
+          saveTodos(todos);
+          renderTodos(todos, filters);
+        })
 
         //set up todotext
         todoText.textContent = todo.text;
@@ -58,6 +86,12 @@ const renderTodos = function (todos, filters) {
         //set up the remove button
         removeButton.textContent = "x"
         todoEl.appendChild(removeButton);
+
+        removeButton.addEventListener('click', function() {
+          removeTodo(todo.id);
+          saveTodos(todos);
+          renderTodos(todos, filters);
+        })
 
         return todoEl;
 
