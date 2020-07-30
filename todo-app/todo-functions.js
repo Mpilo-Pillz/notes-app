@@ -1,12 +1,22 @@
+'use strict'
+
 // Fetch existing todos from localStroage
+//Falsy values are false, 0, empty string, null, undefined
 const getSavedTodos = function () {
   const todosJSON = localStorage.getItem("todos");
+try {
+  return todosJSON ? JSON.parse(todosJSON) : [];
+} catch (e) {
+  return [];
+}
 
-  if (todosJSON !== null) {
-    return JSON.parse(todosJSON);
-  } else {
-    return [];
-  }
+  // return todosJSON !== null ? JSON.parse(todosJSON) : [];
+
+  // if (todosJSON !== null) {
+  //   return JSON.parse(todosJSON);
+  // } else {
+  //   return [];
+  // }
 };
 
 //save todos to local storage
@@ -15,10 +25,8 @@ const saveTodos = function (todos) {
 };
 
 const removeTodo = function (id) {
-  const todoIndex = todos.findIndex(function (todo){
-    return todo.id === id;
-  })
-
+  const todoIndex = todos.findIndex((todo) => todo.id === id);
+  
   if (todoIndex > -1) {
     todos.splice(todoIndex, 1);
   }
@@ -26,13 +34,14 @@ const removeTodo = function (id) {
 
 //TOggle completed value for given todo
 const toggleTodo = function(id) {
-  const todo = todos.find(function(todo) {
-    return todo.id === id;
-  })
+  const todo = todos.find((todo) => todo.id === id); 
 
-  if (todo !== undefined) {
+  if (todo) {
     todo.completed = !todo.completed;
   }
+  // if (todo !== undefined) {
+  //   todo.completed = !todo.completed;
+  // }
 }
 
 //render todos based on filters
@@ -46,9 +55,7 @@ const renderTodos = function (todos, filters) {
     return searchTextMatch && hideCompletedMatch;
   });
 
-  const incompleteTodos = filteredTodos.filter(function (todo) {
-    return !todo.completed;
-  });
+  const incompleteTodos = filteredTodos.filter((todo) => !todo.completed);
 
   document.querySelector(".todo-list").innerHTML = "";
   
